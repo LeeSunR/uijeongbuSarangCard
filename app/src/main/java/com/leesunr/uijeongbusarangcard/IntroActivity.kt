@@ -52,11 +52,13 @@ class IntroActivity : AppCompatActivity() {
                 stroe.DATA_STD_DE = jsonArray.getJSONObject(i).getString("DATA_STD_DE")
                 storeArray.add(stroe)
             }
+
             runOnUiThread { intro_loading_text.text = "거리 데이터 계산중" }
-            val sortedStore = sortByDistance(storeArray)
+            val sortedStore = createDistance(storeArray)
+
             runOnUiThread { intro_loading_text.text = "데이터베이스 생성중" }
             dbHandler!!.bulkInsert(sortedStore)
-            //dbHandler!!.bulkInsert(storeArray)
+
             runOnUiThread { intro_loading_text.text = "앱 실행 준비중" }
             startActivity(Intent(this,MainActivity::class.java))
             finish()
@@ -81,7 +83,7 @@ class IntroActivity : AppCompatActivity() {
         return currentLatLng
     }
 
-    private fun sortByDistance(arrayStore:ArrayList<Store>): ArrayList<Store>{
+    private fun createDistance(arrayStore:ArrayList<Store>): ArrayList<Store>{
         var resultArrayStore = arrayStore
 
         val userLocation = getLatLng()
@@ -98,19 +100,6 @@ class IntroActivity : AppCompatActivity() {
                         Math.sin(Math.toRadians( 90 - myLat!! )) *
                         Math.sin(Math.toRadians( 90- lat!!.toDouble())) * Math.cos(Math.toRadians(myLong!! - long!!.toDouble())))* 6378.137 * 1000).toLong()
         }
-
-        for (i in 0 until resultArrayStore.size){
-            for (j in i+1 until resultArrayStore.size){
-                if(resultArrayStore.get(j).DISTANCE!=null){
-                    if(resultArrayStore.get(i).DISTANCE==null || resultArrayStore.get(j).DISTANCE!! < resultArrayStore.get(i).DISTANCE!!){
-                        var temp:Store = resultArrayStore.get(j)
-                        resultArrayStore.set(j,resultArrayStore.get(i))
-                        resultArrayStore.set(i,temp)
-                    }
-                }
-            }
-        }
-
         return resultArrayStore
     }
 
@@ -118,15 +107,8 @@ class IntroActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             1000->{
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initAppData()
-                    Log.e("result","1")
-                }
-                else {
-                    finish()
-
-                    Log.e("result","2")
-                }
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) initAppData()
+                else finish()
             }
         }
     }

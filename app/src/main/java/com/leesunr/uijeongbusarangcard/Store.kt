@@ -12,7 +12,7 @@ class Store{
     var REFINE_WGS84_LAT:String?=null
     var REFINE_WGS84_LOGT:String?=null
     var DATA_STD_DE:String?=null
-    var DISTANCE:Long?=null
+    var DISTANCE:Long?=99999
 
     constructor(){}
 

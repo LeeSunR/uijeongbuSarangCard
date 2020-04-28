@@ -108,7 +108,7 @@ class IntroActivity : AppCompatActivity() {
         when(requestCode){
             1000->{
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) initAppData()
-                else finish()
+                else initAppData()
             }
         }
     }

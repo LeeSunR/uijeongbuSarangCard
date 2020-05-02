@@ -77,7 +77,7 @@ class DatabaseHelper(context: Context): SQLiteOpenHelper(context, DB_NAME, null,
 
     fun getStore(query: String): ArrayList<Store>{
         val storeArray = ArrayList<Store>()
-        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $query ORDER BY CAST($DISTANCE AS INTEGER)"
+        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $query"
         val db = writableDatabase
         val cursor = db.rawQuery(selectQueryHandler,null)
         if (cursor.moveToFirst()){

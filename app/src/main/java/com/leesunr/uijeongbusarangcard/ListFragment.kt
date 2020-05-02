@@ -77,8 +77,9 @@ class ListFragment : Fragment() {
         }
 
         listview_store.setOnItemClickListener { adapterView, view, i, l ->
-            Log.e("num",i.toString())
-            var menu = arrayOf("전화하기","지보보기(KAKAO)","길찾기(KAKAO)","지보보기(NAVER)","길찾기(NAVER)")
+//            var menu = arrayOf("전화하기","지보보기(KAKAO)","길찾기(KAKAO)","지보보기(NAVER)","길찾기(NAVER)")
+            var menu = arrayOf("전화하기","지보보기","길찾기")
+
             var builder = AlertDialog.Builder(mContext)
             builder.setTitle(arrayStore?.get(i)?.CMPNM_NM)
             builder.setItems(menu, object :DialogInterface.OnClickListener{
@@ -97,27 +98,37 @@ class ListFragment : Fragment() {
                         1->{
                             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://search?q=$name&p=$dLat,$dLong"))
                             val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=net.daum.android.map")))
+                            if (list == null || list.isEmpty()) {
+                                var builder = AlertDialog.Builder(mContext).setTitle("안내").setMessage("이 기능은 카카오맵이 필요합니다\n앱 설치 화면으로 이동하시겠습니까?")
+                                builder.setPositiveButton("동의", DialogInterface.OnClickListener { dialogInterface, i -> startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=net.daum.android.map"))) })
+                                builder.setNegativeButton("거부", DialogInterface.OnClickListener { dialogInterface, i ->})
+                                builder.show()
+                            }
                             else startActivity(intent)
                         }
                         2->{
                             var intent = Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp=$myLat,$myLong&ep=$dLat,$dLong&by=FOOT"))
                             val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=net.daum.android.map")))
+                            if (list == null || list.isEmpty()) {
+                                var builder = AlertDialog.Builder(mContext).setTitle("안내").setMessage("이 기능은 카카오맵이 필요합니다\n앱 설치 화면으로 이동하시겠습니까?")
+                                builder.setPositiveButton("동의", DialogInterface.OnClickListener { dialogInterface, i -> startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=net.daum.android.map"))) })
+                                builder.setNegativeButton("거부", DialogInterface.OnClickListener { dialogInterface, i ->})
+                                builder.show()
+                            }
                             else startActivity(intent)
                         }
-                        3->{
-                            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("nmap://search?query=$name"))
-                            val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.nhn.android.nmap")))
-                            else startActivity(intent)
-                        }
-                        4->{
-                            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("nmap://route/walk?slat=$myLat&slng=$myLong&sname=현재위치&dlat=$dLat&dlng=$dLong&dname=$name"))
-                            val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.nhn.android.nmap")))
-                            else startActivity(intent)
-                         }
+//                        3->{
+//                            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("nmap://search?query=$name"))
+//                            val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+//                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.nhn.android.nmap")))
+//                            else startActivity(intent)
+//                        }
+//                        4->{
+//                            var intent = Intent(Intent.ACTION_VIEW, Uri.parse("nmap://route/walk?slat=$myLat&slng=$myLong&sname=현재위치&dlat=$dLat&dlng=$dLong&dname=$name"))
+//                            val list = mContext?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+//                            if (list == null || list.isEmpty()) startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.nhn.android.nmap")))
+//                            else startActivity(intent)
+//                         }
                     }
                 }
             })
@@ -191,7 +202,7 @@ class ListFragment : Fragment() {
     }
 
     private fun getSelectStore(query: String){
-        arrayStore = dbHandler!!.getStore(query)
+        arrayStore = dbHandler!!.getStore("$query ORDER BY CAST(DISTANCE AS INTEGER)")
         tv_list_result.text = "검색결과 : ${arrayStore?.size}건"
         listview_store.adapter = StoreListAdapter(mContext!!,arrayStore!!)
     }

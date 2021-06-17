@@ -1,6 +1,19 @@
 <resources>
-    <string name="app_name">uijeongbuSarangCard</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">의정부사랑카드 가맹점</string>
+
+    <string name="getVersionCheckFail">데이터 버전 체크에 실패하였습니다.</string>
+    <string name="getNetworkDataFail">데이터를 가져오는데 실패하였습니다.</string>
+    <string name="startApp">해당 앱으로 이동합니다</string>
+    <string name="startPlayStore">해당 앱이 없어 설치 화면으로 이동합니다.</string>
+
+    <string name="searchHint">검색어를 입력하세요</string>
+    <string name="category">분류</string>
+    <string name="btn_close">닫기</string>
+    <string name="installed">설치됨</string>
+    <string name="uninstalled">설치안됨</string>
+    <string name="btn_yes">네</string>
+    <string name="btn_no">아니요</string>
+    <string name="information">안내</string>
+
 </resources>

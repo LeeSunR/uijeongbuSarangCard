@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>base_url</key>
+        <value>http://leesunr.github.io/</value>
+    </entry>
+    <entry>
+        <key>min_version</key>
+        <value>3</value>
+    </entry>
+</defaultsMap>

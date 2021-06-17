@@ -2,26 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leesunr.uijeongbusarangcard">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
+        android:name=".common.GlobalApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="의정부사랑카드 가맹점"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Uijeongbusarangcard"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".SearchActivity"/>
+        <!-- 네이버 지도 -->
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBn4VC_i5X22T6ckOXCgMRHNd19mwZ0wPo"/>
-        <activity android:name=".IntroActivity">
+            android:name="com.naver.maps.map.ucf1ihgqmr"
+            android:value="ucf1ihgqmr" />
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".main.MainActivity" />
     </application>
 
 </manifest>

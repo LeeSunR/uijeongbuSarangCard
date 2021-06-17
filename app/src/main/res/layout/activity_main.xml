@@ -1,61 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    android:id="@+id/layout_sliding_panel"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:gravity="bottom"
+    app:umanoDragView="@id/pannel_drag"
+    app:umanoFadeColor="#00FFFFFF"
+    app:umanoOverlay="true"
+    app:umanoPanelHeight="120dp"
+    app:umanoParallaxOffset="0dp"
+    app:umanoScrollableView="@id/rcy_store"
+    app:umanoShadowHeight="4dp"
+    android:background="@color/white"
+    tools:context=".main.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavi"
-            android:gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemBackground="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="parent"
-            android:background="#FFFFFF"
-            app:menu="@menu/bottom_navigation_menu"/>
 
-        <FrameLayout
-            android:id="@+id/fragmentView"
+        <fragment
+            android:id="@+id/map"
+            android:name="com.naver.maps.map.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavi"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_ui"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/layout_top_ui"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:baselineAligned="false">
+
+                <FrameLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/bg_corner_4dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:id="@+id/text_category"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:text="@string/category"
+                        android:textSize="12dp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_corner_4dp"
+                    android:elevation="4dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/text_search"
+                        android:textColor="@color/gray"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="@string/searchHint"
+                        android:textSize="14dp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:src="@drawable/ic_baseline_search_24"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                app:layout_constraintTop_toBottomOf="@+id/layout_top_ui"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_margin="4dp"
+                    android:textSize="12dp"
+                    android:padding="0dp"
+                    android:background="@drawable/bg_corner_64dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/btn_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    style="Widget.MaterialComponents.Button.TextButton"
+                    android:text="검색 초기화" />
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_message"
+                android:layout_marginBottom="20dp"
+                android:background="#80000000"
+                android:layout_marginHorizontal="20dp"
+                android:text="검색 결과가 없습니다"
+                android:gravity="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/layout_highlight_ui"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginTop="10dp"
+                    android:includeFontPadding="false"
+                    android:id="@+id/text_highlight_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textStyle="bold"
+                    android:text="우리동네 국수집(장암점)"
+                    android:textSize="16dp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:includeFontPadding="false"
+                    android:id="@+id/text_highlight_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:gravity="center"
+                    android:text="음식점"
+                    android:textSize="14dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:includeFontPadding="false"
+                    android:id="@+id/text_highlight_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="경기 의정부시 동일로454번길 19경기 의정부시 동일로454번길 1경기 의정부시 동일로454번길 1"
+                    android:textSize="12dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:elevation="4dp"
+                android:id="@+id/layout_navigation"
+                android:clickable="true"
+                android:background="@drawable/bg_corner_top_10dp"
+                android:backgroundTint="@color/main_color"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:tint="@color/white"
+                    android:id="@+id/img_navigation"
+                    android:src="@drawable/ic_baseline_directions_car_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/text_navigation"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textSize="14dp"
+                    android:text="길찾기"
+                    android:id="@+id/text_navigation"
+                    app:layout_constraintTop_toBottomOf="@+id/img_navigation"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_loading"
-        android:visibility="gone"
-        android:theme="@android:style/Theme.Translucent"
-        android:background="#6A000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <LinearLayout
+        android:id="@+id/pannel_drag"
+        android:background="@drawable/bg_corner_top_10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ProgressBar
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/colorPrimaryDark"
-            android:layout_gravity="center"
-            android:layout_width="128dp"
-            android:layout_height="128dp"/>
-    </FrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="false"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:background="#FAFAFA"
+            android:src="@drawable/ic_baseline_drag_handle_24"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcy_store"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+    </LinearLayout>
 
-
-
-
-
-
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
